@@ -18,3 +18,7 @@ Clone the repository to your local machine and open the index.html file in your 
 - Bootstrap
 - GPT-4
 - VS Code
+
+## LIMITATIONS AND FUTURE IMPROVEMENTS
+
+One thing I still cannot solve is to make the Skewing transformations works nicely with the other types. Currently if Skew is applied as the last step, no problem. But if it is applied before other transformations, it will mess up the other transformations. I am still trying to figure out how to solve this problem.
