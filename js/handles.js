@@ -204,6 +204,10 @@ function removeAllHandles() {
     document.querySelectorAll(".handle").forEach(handle => {
         handle.remove();
     });
+
+    document.querySelectorAll(".scale-border").forEach(border => {
+        border.remove();
+    });
 }
 
 function hasHandles(group) {
