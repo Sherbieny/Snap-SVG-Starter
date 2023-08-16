@@ -8,10 +8,9 @@ window.addEventListener("load", function () {
     //Gather the screen dimensions
     const board = document.getElementById('board');
     const boardRect = board.getBoundingClientRect();
-    const boardWidth = parseFloat(boardRect.width);
-    const boardHeight = parseFloat(boardRect.height);
+    const boardWidth = boardRect.width;
+    const boardHeight = boardRect.height;
 
-    console.log(boardWidth, boardHeight);
     //Create the editor
     editor = new Editor('#canvas', 0, 0, boardWidth, boardHeight);
     //Add the event listeners
