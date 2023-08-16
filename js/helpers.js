@@ -12,9 +12,10 @@ function saveSVG() {
     const blob = new Blob([svg], { type: "image/svg+xml" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
+    const fileName = 'canvas_' + new Date().getTime() + '.svg';
 
     link.setAttribute("href", url);
-    link.setAttribute("download", "canvas.svg");
+    link.setAttribute("download", fileName);
     link.click();
 }
 
