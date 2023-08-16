@@ -1,10 +1,12 @@
 /**
- * Main canvas module for the SVG Editor.
+ * Main canvas class for the SVG Editor.
  * Initializes the canvas as a Snap SVG element.
  * Handles the following:
  * - Adding new elements to the canvas
- * - Removing elements from the canvas
- * - Cloning elements on the canvas
+ * - Clearing the canvas
+ * - Selecting elements on the canvas
+ * - Positioning elements on the canvas
+ * - Return selected elements
  * - Exporting the canvas as an SVG string
  */
 
@@ -60,6 +62,8 @@ class Editor {
     }
 
     createClipPath() {
+        //clear old defs
+        this.paper.selectAll('defs').forEach((defs) => { defs.remove(); });
         // Create a clipPath element with a unique ID
         const clipPathId = "clip-path-" + Date.now();
         const clipPath = this.paper.el('clipPath').attr({ id: clipPathId });
@@ -80,7 +84,6 @@ class Editor {
             {
                 stroke: '#000000',
                 fill: 'none',
-                id: 'finish-border',
                 strokeWidth: 10,
             }
         );
@@ -95,11 +98,6 @@ class Editor {
         group.node.addEventListener('click', (e) => {
             selectGroup(group);
         });
-    }
-
-    addNewGroup(newGroup) {
-        this.addGroup(newGroup);
-        addDragEvent(newGroup);
     }
 
 
@@ -125,12 +123,10 @@ class Editor {
         const element = group.select('.shape');
         let xPos, yPos;
 
-        const centerX = this.width / 2;
-        const centerY = this.height / 2;
         const stdDevX = this.width / 12; // Adjust these to change how concentrated the distribution is
         const stdDevY = this.height / 12; // around the center. Smaller values = more concentration.
-        xPos = Math.floor(this.getRandomGaussian(centerX, stdDevX));
-        yPos = Math.floor(this.getRandomGaussian(centerY, stdDevY));
+        xPos = Math.floor(this.getRandomGaussian(this.centerX, stdDevX));
+        yPos = Math.floor(this.getRandomGaussian(this.centerY, stdDevY));
 
         group.attr({
             transform: `t${xPos},${yPos}`
@@ -161,17 +157,18 @@ class Editor {
         this.group = this.paper.group();
         this.clearLinesAndGuides();
         this.createGrid();
+        this.createClipPath();
         this.group.add(this.border);
         this.group.node.id = 'main-group';
         removeAllHandles();
     }
 
     /**
-     * Clear all orphans lines and guides.
+     * Clear all orphans lines and rects.
      */
     clearLinesAndGuides() {
         this.paper.selectAll('line').forEach((line) => { line.remove(); });
-        this.border.selectAll('rect').forEach((rect) => { rect.remove(); });
+        this.paper.selectAll('rect').forEach((rect) => { rect.remove(); });
     }
 
     /**
