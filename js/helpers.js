@@ -7,6 +7,7 @@ function generateId() {
 }
 
 function saveSVG() {
+    removeAllHandles();
     const svg = editor.toSVGString();
     const blob = new Blob([svg], { type: "image/svg+xml" });
     const url = URL.createObjectURL(blob);
